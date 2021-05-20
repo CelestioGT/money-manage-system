@@ -7,8 +7,11 @@ from django.http import HttpResponse
 
 from .models import record
 from .forms import recordForm
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
+@login_required
 def Home(request):
     if request.POST:
         form = recordForm(request.POST)

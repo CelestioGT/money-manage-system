@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from transaction import views
+from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.Home,name="home"),
     path('delete/<int:pk>',views.DeleteTransaction,name="delete"),
-    path('edit/<int:pk>',views.EditTransaction,name="edit")
-    
+    path('edit/<int:pk>',views.EditTransaction,name="edit"),
+    path('accounts/',include('django.contrib.auth.urls')),
 ]
