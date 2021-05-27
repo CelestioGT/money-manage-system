@@ -14,6 +14,8 @@ class record(models.Model):
     type = models.CharField(max_length = 15, choices = amountType,default= 'deposite')
     
     amount = models.IntegerField(default=0,verbose_name= 'จำนวนเงิน')
+    evidence = models.FileField(upload_to='evidence/',null = True, blank = True, verbose_name="หลักฐาน")
+
 
 
 

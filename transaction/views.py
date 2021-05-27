@@ -1,9 +1,11 @@
 #from moneymanagement.transaction.models import record
 import datetime
+import logging
 
 from django.db.models import Sum
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+
 
 from .models import record
 from .forms import recordForm
@@ -13,15 +15,14 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def Home(request):
+    #Create Transaction Form
     if request.POST:
-        form = recordForm(request.POST)
+        form = recordForm(request.POST,request.FILES)
         print(request.POST)
         if form.is_valid():
             form.save()
         else:
             print(form.errors)
-
-
 
     form = recordForm()
     data = record.objects.all().order_by('-date')
@@ -48,7 +49,7 @@ def Home(request):
     #         balance -= results.amount
     #     if results.type == "transfer":
     #         balance -= results.amount
-    context = {'records':data,
+    context = { 'records':data,
                 'balance':balance,
                 'DepositePerMonth':DepositePerMonth,
                 'WithdrawPerMonth':WithdrawPerMonth,
@@ -57,14 +58,14 @@ def Home(request):
               }
     return render(request,'index.html',context)
 
-def CreateTransaction(request):
-    records = record() 
-    records.title = request.POST.get('name')
-    # amount=request.post['amount']
-    # descript=request.post['descript']
-    # type=request.post['type']
-    records.save()
-    return render(request,'index.html')
+# @login_required
+# def CreateTransaction(request):
+#     if request.method == 'POST':
+#         form = record(request.POST, request.FILES)
+#         if form.is_valid():
+#             SaveTrans = form.save(commit=False)
+#             logger.info('Create New Transaction Success')
+#             return redirect('/')
 
 def DeleteTransaction(request,pk):
     myTransaction = record.objects.get(id = pk)

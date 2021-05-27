@@ -387,13 +387,13 @@
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 ยอดเงินคงเหลือ
                                             </div>
-                                            {% with balance=0 %} 
+                                            {% comment %} {% with balance=0 %} 
                                             {% endwith %}
                                             {% for record in records %}
                                                 {% if record.type == "deposite" %}
                                                  
                                                 {% endif %}
-                                            {% endfor %}
+                                            {% endfor %} {% endcomment %}
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{balance}}</div>
                                         </div>
                                         <div class="col-auto">
@@ -534,7 +534,16 @@
                                             {% endif %}                                        
                                             <td>{{ record.date }}</td>
                                             <td>{{ record.name }}</td>
-                                            <td>{{ record.description }}</td>
+                                            <td>
+                                                {% if record.evidence %}
+                                                    <a href ="{{ record.evidence.url }}" target = '_blank'>
+                                                        {{ record.description }}
+                                                    </a>
+                                                {% else %}  
+                                                    {{ record.description }}    
+                                                {% endif %}                                 
+                                            
+                                            </td>
                                            
                                         </tr>
                                         {% endfor %}
@@ -556,29 +565,33 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                <form action="" method="POST">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1">ประเภทการทำรายการ</label>
-                                        {{ form.type }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.amount.label }}
-                                        {{ form.amount }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.name.label }}
-                                        {{ form.name }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date">วันที่</label>
-                                        {{ form.date }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="descript">รายละเอียด</label>
-                                         {{ form.description }}
-                                    </div>
-                                   <button type="submit" class="btn btn-primary">บันทึกการทำรายการ</button>
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">ประเภทการทำรายการ</label>
+                                            {{ form.type }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.amount.label }}
+                                            {{ form.amount }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.name.label }}
+                                            {{ form.name }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date">วันที่</label>
+                                            {{ form.date }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descript">รายละเอียด</label>
+                                            {{ form.description }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descript">หลักฐานการทำรายการ</label>
+                                            {{ form.evidence }}
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">บันทึกการทำรายการ</button>
                                     </form>
                                 </div>
                             </div>
