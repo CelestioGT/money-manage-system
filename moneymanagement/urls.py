@@ -25,5 +25,6 @@ urlpatterns = [
     path('',views.Home,name="home"),
     path('delete/<int:pk>',views.DeleteTransaction,name="delete"),
     path('edit/<int:pk>',views.EditTransaction,name="edit"),
+    path('team/',views.Team,name="team"),
     path('accounts/',include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)

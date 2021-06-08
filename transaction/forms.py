@@ -15,3 +15,4 @@ class recordForm(ModelForm):
         self.fields['description'].widget.attrs.update({'class': 'form-control','placeholder':'รายละเอียด'})
         self.fields['type'].widget.attrs.update({'class': 'form-control','placeholder':'ผู้ทำรายการ'})
         self.fields['amount'].widget.attrs.update({'class': 'form-control','placeholder':'จำนวน'})
+

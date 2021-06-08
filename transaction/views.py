@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def Home(request):
-    #Create Transaction Form
+    #Create Transaction
     if request.POST:
         form = recordForm(request.POST,request.FILES)
         print(request.POST)
@@ -32,7 +32,8 @@ def Home(request):
     dataMonth = record.objects.filter(date__year=today.year,
                            date__month=today.month)
     
-    balance = data.aggregate(Sum('amount'))
+    #balance = data.aggregate(Sum('amount'))
+    balance = 0
     DepositePerMonth = 0
     WithdrawPerMonth = 0
     # NumberOfTransaction = 0
@@ -41,14 +42,14 @@ def Home(request):
             DepositePerMonth += resultsMonth.amount
         if resultsMonth.type == "withdraw":
             WithdrawPerMonth -= resultsMonth.amount
-    # for results in data:
-    #     # NumberOfTransaction += 1
-    #     if results.type == "deposite":
-    #         balance += results.amount
-    #     if results.type == "withdraw":
-    #         balance -= results.amount
-    #     if results.type == "transfer":
-    #         balance -= results.amount
+    for results in data:
+        # NumberOfTransaction += 1
+        if results.type == "deposite":
+            balance += results.amount
+        if results.type == "withdraw":
+            balance -= results.amount
+        if results.type == "transfer":
+            balance -= results.amount
     context = { 'records':data,
                 'balance':balance,
                 'DepositePerMonth':DepositePerMonth,
@@ -84,8 +85,43 @@ def EditTransaction(request,pk):
             print(form.errors)
     else:
         form = recordForm(instance = myTransaction)
-        context = {'form':form}
+        data = record.objects.all().order_by('-date')
+        NumberOfTransaction = data.count()
+
+        today = datetime.date.today()
+        dataMonth = record.objects.filter(date__year=today.year,
+                            date__month=today.month)
+        
+        #balance = data.aggregate(Sum('amount'))
+        balance = 0
+        DepositePerMonth = 0
+        WithdrawPerMonth = 0
+        # NumberOfTransaction = 0
+        for resultsMonth in dataMonth:
+            if resultsMonth.type == "deposite":
+                DepositePerMonth += resultsMonth.amount
+            if resultsMonth.type == "withdraw":
+                WithdrawPerMonth -= resultsMonth.amount
+        for results in data:
+            # NumberOfTransaction += 1
+            if results.type == "deposite":
+                balance += results.amount
+            if results.type == "withdraw":
+                balance -= results.amount
+            if results.type == "transfer":
+                balance -= results.amount
+        context = { 'records':data,
+                    'balance':balance,
+                    'DepositePerMonth':DepositePerMonth,
+                    'WithdrawPerMonth':WithdrawPerMonth,
+                    'NumberOfTransaction':NumberOfTransaction,
+                    'form':form
+                }        
         return render(request,'edit.html',context)
+    
+def Team(request):
+    return render(request,'team.html')
+
 
 
 
