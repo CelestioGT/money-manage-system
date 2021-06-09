@@ -98,103 +98,82 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
 
-                        <!-- Page Heading -->
+                        <!-- Show Team Tiitle -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Money Mananagement System Demo</h1>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ทีมของฉัน
-                            </a>
+                            <h1 class="h3 mb-0 text-gray-800">My Team</h1>
                         </div>
 
-                        <!-- Content Row -->
+                        <!-- Show Team Content -->
                         <div class="row">
-
-                            <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    ยอดเงินคงเหลือ
-                                                </div>
-                                                {% comment %} {% with balance=0 %} 
-                                                {% endwith %}
-                                                {% for record in records %}
-                                                    {% if record.type == "deposite" %}
-                                                    
-                                                    {% endif %}
-                                                {% endfor %} {% endcomment %}
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{balance}}</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
+                            <!-- Area Chart -->
+                            <div class="col-xl-8 col-lg-7">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">ทีมของฉัน</h6>
                                     </div>
-                                </div>
-                            </div>
+                                    <!-- Card Body -->
+                                    
+                                    <div class="card-body">                                      
+                                        <div class="chart-area">
+                                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                        <tbody>   
+                                        {% for record in records %}
+                                        <tr class="odd">
+                                                {% if record.type == "deposite" %}
+                                                    <td class="sorting_1">นำฝากเงิน</td>
+                                                    {% with op="+" %} 
+                                                    <td>
+                                                        {{op}}{{ record.amount }}
+                                                        <!--
+                                                        <a href="{% url 'delete' record.id %}"><i class="fas fa-trash-alt"></i></a>
+                                                        <a href="{% url 'edit' record.id %}"><i class="fas fa-edit"></i></a>
+                                                        -->
+                                                    </td>
+                                                    {% endwith %}
+                                                {% endif %}
+                                                {% if record.type == "withdraw" %}
+                                                    <td class="sorting_1">เบิกถอนเงิน</td>
+                                                    {% with op="-" %} 
+                                                    <td>{{op}}{{ record.amount }} 
+                                                    </td>
+                                                    {% endwith %}
+                                                {% endif %} 
+                                                {% if record.type == "transfer" %}
+                                                    <td class="sorting_1">โอนเงิน</td>
+                                                    {% with op="-" %} 
+                                                    <td>{{op}}{{ record.amount }}</td>
+                                                    {% endwith %}
+                                                {% endif %}                                        
+                                                <td>{{ record.date }}</td>
+                                                <td>{{ record.name }}</td>
+                                                <td>
+                                                    {% if record.evidence %}
+                                                        <a href ="{{ record.evidence.url }}" target = '_blank'>
+                                                            {{ record.description }}
+                                                        </a>
+                                                    {% else %}  
+                                                        {{ record.description }}    
+                                                    {% endif %}                                 
+                                                
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            ตั้งค่า 
+                                                        </a>
 
-                            <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-success shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                    รายรับ (ประจำเดือน)</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{DepositePerMonth}}</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-info shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">รายจ่าย (ประจำเดือน)
-                                                </div>
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col-auto">
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{WithdrawPerMonth}}</div>   
-                                                    </div>
-                                                    <div class="col" style="display:none">
-                                                        <div class="progress progress-sm mr-2">
-                                                            <div class="progress-bar bg-info" role="progressbar"
-                                                                style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                                aria-valuemax="100"></div>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            <a class="dropdown-item" href="{% url 'edit' record.id %}">แก้ไข</a>
+                                                            <a class="dropdown-item" href="{% url 'delete' record.id %}">ลบ</a>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pending Requests Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-warning shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                    จำนวนการทำรายการ</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{NumberOfTransaction}}</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                            </div>
+                                                </td>                                          
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                         </div>
                                     </div>
                                 </div>
@@ -204,7 +183,6 @@
                         <!-- Content Row -->
 
                         <div class="row">
-
                             <!-- Area Chart -->
                             <div class="col-xl-8 col-lg-7">
                                 <div class="card shadow mb-4">
@@ -297,7 +275,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Pie Chart -->
                             <div class="col-xl-4 col-lg-5">
                                 <div class="card shadow mb-4">
