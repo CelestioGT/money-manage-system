@@ -9,6 +9,8 @@ class AllTeam(models.Model):
     name = models.CharField(max_length = 50,default = "", verbose_name='ชื่อทีม')
     # create_by = models.ForeignKey(User, on_delete=models.CASCADE,default=None, null=True)
     slug = models.SlugField(null=True, blank=True)
+
+    
     # date_build = models.DateField(verbose_name="วันที่สร้างทีม", default=datetime.date.today) 
     def __str__(self):
         return self.name
