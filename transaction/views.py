@@ -21,7 +21,9 @@ def Team(request):
         form = CreateTeamForm(request.POST)
         print(request.POST)
         if form.is_valid():
-            form.save()
+            newTeam = form.save(commit=False)
+           # newTeam.create_by = 1
+            newTeam.save()
             lastCreate = AllTeam.objects.latest('team_id')
             myTeam = MyTeam(Member = request.user, team = lastCreate ,permissions='admin')
             myTeam.save()
@@ -39,8 +41,6 @@ def Team(request):
 
 def Home(request,slug):
     #Create Transaction
-    print('hello : ',request.user)
-
     CurrentTeam = AllTeam.objects.get(slug = slug)
 
     global CurrentSlug

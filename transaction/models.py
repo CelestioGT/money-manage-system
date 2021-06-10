@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class AllTeam(models.Model):   
     team_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 50,default = "", verbose_name='ชื่อทีม')
-    create_by = settings.AUTH_USER_MODEL
+    # create_by = models.ForeignKey(User, on_delete=models.CASCADE,default=None, null=True)
     slug = models.SlugField(null=True, blank=True)
     # date_build = models.DateField(verbose_name="วันที่สร้างทีม", default=datetime.date.today) 
     def __str__(self):
@@ -38,12 +38,6 @@ class MyTeam(models.Model):
         ('member','member')
     ]
     permissions = models.CharField(max_length = 10,choices = permissionChoice, verbose_name= 'สิทธิ์')
-
-class ArticleAdmin(admin.ModelAdmin):
-    def save_model(self, request, obj, form, change):
-        obj.user = request.user
-        super().save_model(request, obj, form, change)   
-
 
 
     
