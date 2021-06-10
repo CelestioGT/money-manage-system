@@ -12,32 +12,51 @@ from .forms import recordForm, CreateTeamForm
 from django.contrib.auth.decorators import login_required
 
 
+CurrentSlug = ''
+
 # Create your views here.
+login_required
 def Team(request):
     if request.POST:
         form = CreateTeamForm(request.POST)
         print(request.POST)
         if form.is_valid():
             form.save()
+            lastCreate = AllTeam.objects.latest('team_id')
+            myTeam = MyTeam(Member = request.user, team = lastCreate ,permissions='admin')
+            myTeam.save()
         else:
-            print(form.errors)    
-    return render(request,'team.html')
+            print(form.errors)
+        return render(request,'team.html')
+    else:
+        myTeam = MyTeam.objects.filter(Member = request.user)
+        data = {'myTeam' : myTeam}
+        return render(request,'team.html',data)
+
+    
 
 @login_required
 
 def Home(request,slug):
     #Create Transaction
+    print('hello : ',request.user)
+
+    CurrentTeam = AllTeam.objects.get(slug = slug)
+
+    global CurrentSlug
+    CurrentSlug = slug
     if request.POST:
         form = recordForm(request.POST,request.FILES) #recordForm from forms.py in app
         print(request.POST)
         if form.is_valid():
-            form.save()
+            newbill = form.save(commit=False)
+            newbill.team = CurrentTeam
+            newbill.save()
         else:
             print(form.errors)
 
     form = recordForm()
-    #data = record.objects.all().order_by('-date')
-    data = record.objects.filter(slug=slug)
+    data = record.objects.all().order_by('-date')
     # NumberOfTransaction = data.count()
 
     today = datetime.date.today()
@@ -82,8 +101,13 @@ def Home(request,slug):
 
 def DeleteTransaction(request,pk):
     myTransaction = record.objects.get(id = pk)
+    print('myTransaction = ',myTransaction)
     myTransaction.delete()
-    return redirect('/')
+
+    global CurrentSlug
+    CurrentTeam = AllTeam.objects.get(slug = CurrentSlug)
+
+    return redirect(f'/team/{CurrentSlug}')
 
 def EditTransaction(request,pk):
     myTransaction = record.objects.get(id = pk)
@@ -131,13 +155,6 @@ def EditTransaction(request,pk):
                 }        
         return render(request,'edit.html',context)
     
-
-
-
-
-
-
-
 
     
 

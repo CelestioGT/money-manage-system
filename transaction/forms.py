@@ -7,6 +7,7 @@ class recordForm(ModelForm):
     class Meta:
         model = record
         fields = '__all__'
+        exclude = ['team',]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update({'class': 'form-control','placeholder':'ผู้ทำรายการ'})
@@ -15,6 +16,7 @@ class recordForm(ModelForm):
         self.fields['description'].widget.attrs.update({'class': 'form-control','placeholder':'รายละเอียด'})
         self.fields['type'].widget.attrs.update({'class': 'form-control','placeholder':'ผู้ทำรายการ'})
         self.fields['amount'].widget.attrs.update({'class': 'form-control','placeholder':'จำนวน'})
+
 class CreateTeamForm(ModelForm):
     class Meta:
         model = AllTeam
