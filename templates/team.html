@@ -5,335 +5,164 @@
 
 {% block content %}
 <div id="content-wrapper" class="d-flex flex-column">
-    <!-- Main Content -->
-        <div id="content">
+<!-- Main Content -->
+    <div id="content">
 
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                <!-- Sidebar Toggle (Topbar) -->
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                    <i class="fa fa-bars"></i>
-                </button>
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
 
-                <!-- Topbar Search -->
-                <form
-                    class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                            aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
+            <!-- Topbar Search -->
+            <form
+                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                        aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
                     </div>
+                </div>
+            </form>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                <li class="nav-item dropdown no-arrow d-sm-none">
+                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search fa-fw"></i>
+                    </a>
+                    <!-- Dropdown - Messages -->
+                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                        aria-labelledby="searchDropdown">
+                        <form class="form-inline mr-auto w-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0 small"
+                                    placeholder="Search for..." aria-label="Search"
+                                    aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+                <div class="topbar-divider d-none d-sm-block"></div>
+
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                        <img class="img-profile rounded-circle"
+                            src="{% static 'img/undraw_profile.svg' %}">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Settings
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Activity Log
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+
+            </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">ทีมของฉัน</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                
+                <div class="chart-area">
+                    <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                <tbody>   
+                
+                </tbody>
+            </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">เข้าร่วมทีม / สร้างทีมของคุณเอง</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="ค้นหาชื่อทีมที่คุณต้องการทำงานด้วย" aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">หรือสร้างทีมของคุณเอง</h6>
+            </div>
+            <div class="card-body">
+                <form action="" method="POST">
+                
+                    {% csrf_token %}
+                    <div class="form-group">
+                        ชื่อทีมของคุณ
+                        <input type="text" name="name" maxlength="50" class="form-control" placeholder="ชื่อทีม...." required="" id="id_name">
+                    </div>
+                    <button type="submit" class="btn btn-primary">สร้างทีม</button>
                 </form>
-
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-
-                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                            aria-labelledby="searchDropdown">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small"
-                                        placeholder="Search for..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-                    <div class="topbar-divider d-none d-sm-block"></div>
-
-                    <!-- Nav Item - User Information -->
-                    <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ request.user.first_name }} {{ request.user.last_name }}</span>
-                            <img class="img-profile rounded-circle"
-                                src="{% static 'img/undraw_profile.svg' %}">
-                        </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                            aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </li>
-
-                </ul>
-
-            </nav>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                        <!-- Show Team Tiitle -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">My Team</h1>
-                        </div>
-
-                        <!-- Show Team Content -->
-                        <div class="row">
-                            <!-- Area Chart -->
-                            <div class="col-xl-8 col-lg-7">
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">ทีมของฉัน</h6>
-                                    </div>
-                                    <!-- Card Body -->
-                                    
-                                    <div class="card-body">                                      
-                                        <div class="chart-area">
-                                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-                                        <tbody>   
-                                        {% for record in records %}
-                                        <tr class="odd">
-                                                {% if record.type == "deposite" %}
-                                                    <td class="sorting_1">นำฝากเงิน</td>
-                                                    {% with op="+" %} 
-                                                    <td>
-                                                        {{op}}{{ record.amount }}
-                                                        <!--
-                                                        <a href="{% url 'delete' record.id %}"><i class="fas fa-trash-alt"></i></a>
-                                                        <a href="{% url 'edit' record.id %}"><i class="fas fa-edit"></i></a>
-                                                        -->
-                                                    </td>
-                                                    {% endwith %}
-                                                {% endif %}
-                                                {% if record.type == "withdraw" %}
-                                                    <td class="sorting_1">เบิกถอนเงิน</td>
-                                                    {% with op="-" %} 
-                                                    <td>{{op}}{{ record.amount }} 
-                                                    </td>
-                                                    {% endwith %}
-                                                {% endif %} 
-                                                {% if record.type == "transfer" %}
-                                                    <td class="sorting_1">โอนเงิน</td>
-                                                    {% with op="-" %} 
-                                                    <td>{{op}}{{ record.amount }}</td>
-                                                    {% endwith %}
-                                                {% endif %}                                        
-                                                <td>{{ record.date }}</td>
-                                                <td>{{ record.name }}</td>
-                                                <td>
-                                                    {% if record.evidence %}
-                                                        <a href ="{{ record.evidence.url }}" target = '_blank'>
-                                                            {{ record.description }}
-                                                        </a>
-                                                    {% else %}  
-                                                        {{ record.description }}    
-                                                    {% endif %}                                 
-                                                
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            ตั้งค่า 
-                                                        </a>
-
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                            <a class="dropdown-item" href="{% url 'edit' record.id %}">แก้ไข</a>
-                                                            <a class="dropdown-item" href="{% url 'delete' record.id %}">ลบ</a>
-                                                        </div>
-                                                    </div>
-                                                </td>                                          
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Content Row -->
-
-                        <div class="row">
-                            <!-- Area Chart -->
-                            <div class="col-xl-8 col-lg-7">
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">ประวัติการทำรายการ</h6>
-                                        <div class="dropdown no-arrow">
-                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                aria-labelledby="dropdownMenuLink">
-                                                <div class="dropdown-header">Dropdown Header:</div>
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card Body -->
-                            
-                            <div class="card-body">
-                                
-                                <div class="chart-area">
-                                    <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-                                <thead>
-                                    <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 57px;">รายการ</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 61px;">จำนวน</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 49px;">วันที่</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 31px;">โดย</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 69px;">รายละเอียด</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 69px;">ตั้งค่า</th>
-                                    </tr>
-                                </thead>
-                                <tbody>   
-                                {% for record in records %}
-                                <tr class="odd">
-                                        {% if record.type == "deposite" %}
-                                            <td class="sorting_1">นำฝากเงิน</td>
-                                            {% with op="+" %} 
-                                            <td>
-                                                {{op}}{{ record.amount }}
-                                                <!--
-                                                <a href="{% url 'delete' record.id %}"><i class="fas fa-trash-alt"></i></a>
-                                                <a href="{% url 'edit' record.id %}"><i class="fas fa-edit"></i></a>
-                                                -->
-                                            </td>
-                                            {% endwith %}
-                                        {% endif %}
-                                        {% if record.type == "withdraw" %}
-                                            <td class="sorting_1">เบิกถอนเงิน</td>
-                                            {% with op="-" %} 
-                                            <td>{{op}}{{ record.amount }} 
-                                            </td>
-                                            {% endwith %}
-                                        {% endif %} 
-                                        {% if record.type == "transfer" %}
-                                            <td class="sorting_1">โอนเงิน</td>
-                                            {% with op="-" %} 
-                                            <td>{{op}}{{ record.amount }}</td>
-                                            {% endwith %}
-                                        {% endif %}                                        
-                                        <td>{{ record.date }}</td>
-                                        <td>{{ record.name }}</td>
-                                        <td>
-                                            {% if record.evidence %}
-                                                <a href ="{{ record.evidence.url }}" target = '_blank'>
-                                                    {{ record.description }}
-                                                </a>
-                                            {% else %}  
-                                                {{ record.description }}    
-                                            {% endif %}                                 
-                                        
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    ตั้งค่า 
-                                                </a>
-
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="{% url 'edit' record.id %}">แก้ไข</a>
-                                                    <a class="dropdown-item" href="{% url 'delete' record.id %}">ลบ</a>
-                                                </div>
-                                            </div>
-                                        </td>                                          
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                                </div>
-                            </div>
-                            <!-- Pie Chart -->
-                            <div class="col-xl-4 col-lg-5">
-                                <div class="card shadow mb-4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">บันทึกการทำรายการ</h6>
-
-                            </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <form action="" method="POST" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1">ประเภทการทำรายการ</label>
-                                        {{ form.type }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.amount.label }}
-                                        {{ form.amount }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.name.label }}
-                                        {{ form.name }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date">วันที่</label>
-                                        {{ form.date }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="descript">รายละเอียด</label>
-                                        {{ form.description }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="descript">หลักฐานการทำรายการ</label>
-                                        {{ form.evidence }}
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">บันทึกการทำรายการ</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- /.container-fluid -->
-
+            </div>         
         </div>
-    <!-- End of Main Content -->
+    </div>
+</div>        
+    </div>
+<!-- End of Main Content -->
 
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2020</span>
-            </div>
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2020</span>
         </div>
-    </footer>
-    <!-- End of Footer -->
+    </div>
+</footer>
+<!-- End of Footer -->
 </div>
 {% endblock %}

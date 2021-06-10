@@ -7,17 +7,28 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 
-from .models import record
-from .forms import recordForm
+from .models import record, AllTeam, MyTeam
+from .forms import recordForm, CreateTeamForm
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+def Team(request):
+    if request.POST:
+        form = CreateTeamForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)    
+    return render(request,'team.html')
+
 @login_required
-def Home(request):
+
+def Home(request,slug):
     #Create Transaction
     if request.POST:
-        form = recordForm(request.POST,request.FILES)
+        form = recordForm(request.POST,request.FILES) #recordForm from forms.py in app
         print(request.POST)
         if form.is_valid():
             form.save()
@@ -25,8 +36,9 @@ def Home(request):
             print(form.errors)
 
     form = recordForm()
-    data = record.objects.all().order_by('-date')
-    NumberOfTransaction = data.count()
+    #data = record.objects.all().order_by('-date')
+    data = record.objects.filter(slug=slug)
+    # NumberOfTransaction = data.count()
 
     today = datetime.date.today()
     dataMonth = record.objects.filter(date__year=today.year,
@@ -36,14 +48,14 @@ def Home(request):
     balance = 0
     DepositePerMonth = 0
     WithdrawPerMonth = 0
-    # NumberOfTransaction = 0
+    NumberOfTransaction = 0
     for resultsMonth in dataMonth:
         if resultsMonth.type == "deposite":
             DepositePerMonth += resultsMonth.amount
         if resultsMonth.type == "withdraw":
             WithdrawPerMonth -= resultsMonth.amount
     for results in data:
-        # NumberOfTransaction += 1
+        NumberOfTransaction += 1
         if results.type == "deposite":
             balance += results.amount
         if results.type == "withdraw":
@@ -119,8 +131,6 @@ def EditTransaction(request,pk):
                 }        
         return render(request,'edit.html',context)
     
-def Team(request):
-    return render(request,'team.html')
 
 
 
