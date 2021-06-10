@@ -1,6 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
-from .models import record
+from .models import record, AllTeam, MyTeam
 
 
 class recordForm(ModelForm):
@@ -15,4 +15,7 @@ class recordForm(ModelForm):
         self.fields['description'].widget.attrs.update({'class': 'form-control','placeholder':'รายละเอียด'})
         self.fields['type'].widget.attrs.update({'class': 'form-control','placeholder':'ผู้ทำรายการ'})
         self.fields['amount'].widget.attrs.update({'class': 'form-control','placeholder':'จำนวน'})
-
+class CreateTeamForm(ModelForm):
+    class Meta:
+        model = AllTeam
+        fields = '__all__'
