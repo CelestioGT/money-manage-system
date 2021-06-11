@@ -21,3 +21,7 @@ class CreateTeamForm(ModelForm):
     class Meta:
         model = AllTeam
         fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control','placeholder':'ชื่อทีม'})
+        self.fields['slug'].widget.attrs.update({'class': 'form-control','placeholder':'URL'})

@@ -4,7 +4,7 @@ import logging
 
 from django.db.models import Sum
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 
 
 from .models import record, AllTeam, MyTeam
@@ -14,7 +14,11 @@ from django.contrib.auth.decorators import login_required
 
 CurrentSlug = ''
 
-# Create your views here.
+
+def Index(request):
+    return render(request,'registration/login.html')
+
+
 login_required
 def Team(request):
     if request.POST:
@@ -22,23 +26,29 @@ def Team(request):
         print(request.POST)
         if form.is_valid():
             newTeam = form.save(commit=False)
-           # newTeam.create_by = 1
+            newTeam.create_by = request.user
             newTeam.save()
             lastCreate = AllTeam.objects.latest('team_id')
-            myTeam = MyTeam(Member = request.user, team = lastCreate ,permissions='admin')
+            myTeam = MyTeam(Member = request.user, team = lastCreate ,permissions='admin', slug = form['slug'].value())
             myTeam.save()
+            form = CreateTeamForm()
+            myTeam = MyTeam.objects.filter(Member = request.user)
+            data = {'myTeam' : myTeam,
+                    'form' : form}
+            return render(request,'team.html',data)
         else:
             print(form.errors)
         return render(request,'team.html')
     else:
+        form = CreateTeamForm()
         myTeam = MyTeam.objects.filter(Member = request.user)
-        data = {'myTeam' : myTeam}
+        data = {'myTeam' : myTeam,
+                'form' : form}
         return render(request,'team.html',data)
 
     
 
 @login_required
-
 def Home(request,slug):
     #Create Transaction
     CurrentTeam = AllTeam.objects.get(slug = slug)
@@ -56,12 +66,12 @@ def Home(request,slug):
             print(form.errors)
 
     form = recordForm()
-    data = record.objects.all().order_by('-date')
+    data = record.objects.all().order_by('-date').filter(team = CurrentTeam)
     # NumberOfTransaction = data.count()
 
     today = datetime.date.today()
     dataMonth = record.objects.filter(date__year=today.year,
-                           date__month=today.month)
+                           date__month=today.month,team = CurrentTeam)
     
     #balance = data.aggregate(Sum('amount'))
     balance = 0
@@ -116,7 +126,7 @@ def EditTransaction(request,pk):
         print(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('/myteam')
         else:
             print(form.errors)
     else:

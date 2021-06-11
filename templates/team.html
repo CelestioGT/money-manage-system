@@ -106,9 +106,10 @@
             <!-- Card Body -->
             <div class="card-body">
                 {% for team in myTeam %}
-                    {{ team.team.name }}<br>
-                    {{ team.Member.first_name }} {{team.Member}}
-                    {{ team.permissions }} 
+                    <a href="/team/{{ team.slug }}">
+                    - {{ team.team.name }}
+                    </a>
+                    ({{ team.Member.first_name }} {{team.Member.last_name}})<br>
                 {% endfor %}
                 <div class="chart-area">
                     <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
@@ -144,11 +145,18 @@
             </div>
             <div class="card-body">
                 <form action="" method="POST">
-                
                     {% csrf_token %}
                     <div class="form-group">
                         ชื่อทีมของคุณ
-                        <input type="text" name="name" maxlength="50" class="form-control" placeholder="ชื่อทีม...." required="" id="id_name">
+                        <div class="form-group">
+                             {{form.name}}
+                        </div>
+                        <div class="form-group">
+                            {{form.slug}}
+                        </div>
+                        <!--
+                            <input type="text" name="name" maxlength="50" class="form-control" placeholder="ชื่อทีม...." required="" id="id_name">
+                        -->
                     </div>
                     <button type="submit" class="btn btn-primary">สร้างทีม</button>
                 </form>

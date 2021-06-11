@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class AllTeam(models.Model):   
     team_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 50,default = "", verbose_name='ชื่อทีม')
-    # create_by = models.ForeignKey(User, on_delete=models.CASCADE,default=None, null=True)
+    create_by = models.ForeignKey(User, on_delete=models.CASCADE,default=None, null=True, blank=True)
     slug = models.SlugField(null=True, blank=True)
 
     
@@ -40,7 +40,11 @@ class MyTeam(models.Model):
         ('member','member')
     ]
     permissions = models.CharField(max_length = 10,choices = permissionChoice, verbose_name= 'สิทธิ์')
+    slug = models.SlugField(null=True, blank=True)
 
+    # def save(self, *args, **kwargs):
+    #     self.name = re.sub(r'(.*)\({1}(.*)\){1}(.*)', r'\1\2\3', self.name)
+    #     super(MyTeam, self).save(*args, **kwargs)
 
     
     

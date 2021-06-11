@@ -7,12 +7,12 @@ class transactionAdmin(admin.ModelAdmin):
 admin.site.register(record,transactionAdmin)
 
 class allteamAdmin(admin.ModelAdmin):
-    list_display = ['team_id','name','team_id']
+    list_display = ['team_id','name','create_by','team_id','slug']
     list_editable =['name']
     prepopulated_fields = {'slug': ('name',)} 
 admin.site.register(AllTeam,allteamAdmin)
 
 class myteamAdmin(admin.ModelAdmin):
-    list_display = ['id','Member','team','permissions']
+    list_display = ['id','Member','team','permissions','slug']
     list_editable =['permissions']    
 admin.site.register(MyTeam,myteamAdmin)
